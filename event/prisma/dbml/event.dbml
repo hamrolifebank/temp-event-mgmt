@@ -1,0 +1,116 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Project "event" {
+  database_type: 'PostgreSQL'
+  Note: 'Event api with Nestjs'
+}
+
+Table Event {
+  id Int [increment, not null]
+  uuid String [pk]
+  name String [not null]
+  contactPhone String [not null]
+  contactEmail String
+  location String [not null]
+  latitude Decimal
+  longitude Decimal
+  bloodBank String [not null]
+  target Int [not null]
+  date DateTime [not null]
+  startTime DateTime [not null]
+  endTime DateTime [not null]
+  isClosed Boolean [not null, default: false]
+  organizationId String
+  organization Organization
+  donations Donation [not null]
+  donors Donor [not null]
+  createdAT DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Organization {
+  id Int [increment, not null]
+  uuid String [pk]
+  name String [not null]
+  phone String [not null]
+  email String
+  address String
+  isBloodBank Boolean [not null, default: false]
+  createdAT DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  events Event [not null]
+}
+
+Table Donation {
+  id Int [increment, not null]
+  uuid String [pk]
+  bloodBagType BloodTypeBagEnum [default: 'SINGLE']
+  bloodBagId String
+  tubeId String
+  consentUrl String
+  rejectReason Json
+  note String
+  extras Json
+  custom String
+  eventId String
+  donorId String
+  event Event
+  donor Donor
+  createdAT DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Donor {
+  id Int [increment, not null]
+  uuid String [pk]
+  name String [not null]
+  phone String [not null]
+  email String [not null]
+  dop DateTime [not null]
+  dopNp DateTime [not null]
+  gender GenderEnum [not null]
+  bloodGroup BloodGroupEnum [not null, default: 'OTHER']
+  location String [not null]
+  latitude Decimal
+  longitude Decimal
+  lastDonated DateTime
+  eventId String [not null]
+  donation Donation [not null]
+  event Event [not null]
+  createdAT DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Enum BloodGroupEnum {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+  OTHER
+}
+
+Enum BloodTypeBagEnum {
+  SINGLE
+  DOUBLE
+}
+
+Enum GenderEnum {
+  M
+  F
+  U
+  O
+}
+
+Ref: Event.organizationId > Organization.uuid
+
+Ref: Donation.eventId > Event.uuid
+
+Ref: Donation.donorId > Donor.uuid
+
+Ref: Donor.eventId > Event.uuid
