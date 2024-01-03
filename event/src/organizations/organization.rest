@@ -1,0 +1,10 @@
+POST http://localhost:3000/organizations
+Content-Type: application/json
+
+{
+"name":"Rumsan",
+"phone":"9813642939",
+"email":"global.info@gmail.com",
+"address":"kapan",
+"isBloodBank":true
+}
