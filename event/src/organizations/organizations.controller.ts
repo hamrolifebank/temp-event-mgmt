@@ -22,8 +22,7 @@ export class OrganizationsController {
 
   @Get()
   findAll() {
-    return 'hello i am orginzation';
-    //return this.organizationsService.findAll();
+    return this.organizationsService.findAll();
   }
 
   @Get(':id')
