@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator dbml{
+  provider = "prisma-dbml-generator"
+  output = "./dbml"
+  outputName = "event.dbml"
+  projectName = "event"
+  projectDatabaseType = "PostgreSQL"
+  projectNote         = "Event api with Nestjs"
+
+}
+
+model Event{
+  id               Int       @default(autoincrement())
+  uuid             String    @id @default(uuid())
+  name             String    @db.VarChar(255)
+  contactPhone     String    @db.VarChar(255)
+  contactEmail     String?    @db.VarChar(255)
+  location         String    @db.VarChar(255)
+  latitude         Decimal?
+  longitude        Decimal?
+  bloodBank        String    @db.VarChar(255)
+  target           Int
+  date             DateTime
+  startTime        DateTime
+  endTime          DateTime
+  isClosed         Boolean @default(false)
+  organizationId   String?
+  organization     Organization? @relation(fields:[organizationId],references:[uuid])
+  donations        Donation[]
+  donors           Donor[]
+  createdAT        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  @@index([name])
+  
+
+}
+
+model Organization {
+  id               Int       @default(autoincrement())
+  uuid             String    @id @default(uuid())
+  name             String    @db.VarChar(255)
+  phone            String    @db.VarChar(255)
+  email            String?    @db.VarChar(255)
+  address          String?    @db.VarChar(255)
+  isBloodBank      Boolean   @default(false)
+  createdAT        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  events           Event[]
+
+}
+
+model Donation {
+  id               Int       @default(autoincrement())
+  uuid             String    @id @default(uuid())
+  bloodBagType     BloodTypeBagEnum?  @default(SINGLE)
+  bloodBagId       String?
+  tubeId           String?
+  consentUrl       String?
+  rejectReason     Json?
+  note             String?
+  extras           Json? 
+  custom           String?
+  eventId          String?
+  donorId          String?
+  event            Event? @relation(fields:[eventId],references:[uuid])
+  donor            Donor?  @relation(fields:[donorId],references:uuid)
+  createdAT        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+}
+
+model Donor {
+id               Int       @default(autoincrement())
+uuid             String    @id @default(uuid())
+name             String    @db.VarChar(255)
+phone            String    @db.VarChar(255)
+email            String    @db.VarChar(255)
+dop              DateTime
+dopNp            DateTime
+gender           GenderEnum  
+bloodGroup       BloodGroupEnum   @default(OTHER)
+location         String    @db.VarChar(255)
+latitude         Decimal?
+longitude        Decimal?          
+lastDonated      DateTime?
+eventId          String
+donation         Donation[]
+event            Event  @relation(fields:[eventId],references:[uuid])
+createdAT        DateTime @default(now())
+updatedAt        DateTime @updatedAt
+@@index([name])
+
+}
+
+enum BloodGroupEnum{
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+  OTHER
+}
+
+enum BloodTypeBagEnum {
+SINGLE
+DOUBLE
+
+}
+
+enum GenderEnum {
+M 
+F 
+U 
+O
+}
+
+
+
+
