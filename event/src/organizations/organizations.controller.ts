@@ -25,9 +25,10 @@ export class OrganizationsController {
     return this.organizationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizationsService.findOne(+id);
+  @Get(':uuid')
+  async findOne(@Param('uuid') uuid: string) {
+    const organization = await this.organizationsService.findOne(uuid);
+    return organization;
   }
 
   @Patch(':id')
