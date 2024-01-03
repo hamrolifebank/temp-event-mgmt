@@ -11,7 +11,7 @@ export class OrganizationsService {
   }
 
   findAll() {
-    return `This action returns all organizations`;
+    return this.prisma.organization.findMany();
   }
 
   findOne(id: number) {
