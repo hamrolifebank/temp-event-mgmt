@@ -11,7 +11,8 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ logger: true }),
   );
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  //whitelist remove unwanted field
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

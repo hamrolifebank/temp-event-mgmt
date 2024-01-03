@@ -17,7 +17,6 @@ export class OrganizationsController {
 
   @Post()
   create(@Body() createOrganizationDto: CreateOrganizationDto) {
-    console.log(createOrganizationDto, 'checking from rest client extention');
     return this.organizationsService.create(createOrganizationDto);
   }
 
