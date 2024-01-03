@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -28,6 +29,9 @@ export class OrganizationsController {
   @Get(':uuid')
   async findOne(@Param('uuid') uuid: string) {
     const organization = await this.organizationsService.findOne(uuid);
+    if (!organization) {
+      throw new NotFoundException(`Organisation with ${uuid} does not exist`);
+    }
     return organization;
   }
 
