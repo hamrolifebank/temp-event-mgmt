@@ -1,4 +1,6 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, HttpAdapterHost } from '@nestjs/core';
+import { PrismaClientExceptionFilter } from './prisma-client-exception/prisma-client-exception.filter';
+
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import {
@@ -13,6 +15,8 @@ async function bootstrap() {
   );
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   //whitelist remove unwanted field
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

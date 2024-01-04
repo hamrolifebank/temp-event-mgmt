@@ -23,13 +23,13 @@ generator dbml{
 model Event{
   id               Int       @default(autoincrement())
   uuid             String    @id @default(uuid())
-  name             String    @db.VarChar(255)
-  contactPhone     String    @db.VarChar(255)
-  contactEmail     String?    @db.VarChar(255)
-  location         String    @db.VarChar(255)
+  name             String    
+  contactPhone     String    
+  contactEmail     String?    
+  location         String    
   latitude         Decimal?
   longitude        Decimal?
-  bloodBank        String    @db.VarChar(255)
+  bloodBank        String    
   target           Int
   date             DateTime
   startTime        DateTime
@@ -50,22 +50,24 @@ model Event{
 model Organization {
   id               Int       @default(autoincrement())
   uuid             String    @id @default(uuid())
-  name             String    @db.VarChar(255)
-  phone            String    @db.VarChar(255)
-  email            String?    @db.VarChar(255)
-  address          String?    @db.VarChar(255)
+  name             String    @unique
+  phone            String    
+  email            String?    
+  address          String?    
   isBloodBank      Boolean   @default(false)
   createdAT        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   events           Event[]
+
+  @@index([name])
 
 }
 
 model Donation {
   id               Int       @default(autoincrement())
   uuid             String    @id @default(uuid())
-  bloodBagType     BloodTypeBagEnum?  @default(SINGLE)
-  bloodBagId       String?
+  bloodBagType     BloodTypeBagEnum?  @default(SINGLE) 
+  bloodBagId       String?      @unique
   tubeId           String?
   consentUrl       String?
   rejectReason     Json?
@@ -84,14 +86,14 @@ model Donation {
 model Donor {
 id               Int       @default(autoincrement())
 uuid             String    @id @default(uuid())
-name             String    @db.VarChar(255)
-phone            String    @db.VarChar(255)
-email            String    @db.VarChar(255)
+name             String    
+phone            String    
+email            String    
 dop              DateTime
 dopNp            DateTime
 gender           GenderEnum  
 bloodGroup       BloodGroupEnum   @default(OTHER)
-location         String    @db.VarChar(255)
+location         String    
 latitude         Decimal?
 longitude        Decimal?          
 lastDonated      DateTime?

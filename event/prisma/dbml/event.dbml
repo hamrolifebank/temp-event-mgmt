@@ -33,7 +33,7 @@ Table Event {
 Table Organization {
   id Int [increment, not null]
   uuid String [pk]
-  name String [not null]
+  name String [unique, not null]
   phone String [not null]
   email String
   address String
@@ -47,7 +47,7 @@ Table Donation {
   id Int [increment, not null]
   uuid String [pk]
   bloodBagType BloodTypeBagEnum [default: 'SINGLE']
-  bloodBagId String
+  bloodBagId String [unique]
   tubeId String
   consentUrl String
   rejectReason Json

@@ -14,8 +14,10 @@ export class OrganizationsService {
     return this.prisma.organization.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} organization`;
+  findOne(uuid: string) {
+    return this.prisma.organization.findUnique({
+      where: { uuid },
+    });
   }
 
   update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
