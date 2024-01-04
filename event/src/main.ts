@@ -11,7 +11,8 @@ import {
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true }),
+    new FastifyAdapter(),
+    //new FastifyAdapter({ logger: true }),
   );
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   //whitelist remove unwanted field

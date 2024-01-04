@@ -20,8 +20,11 @@ export class OrganizationsService {
     });
   }
 
-  update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
-    return `This action updates a #${id} organization`;
+  update(uuid: string, updateOrganizationDto: UpdateOrganizationDto) {
+    return this.prisma.organization.update({
+      where: { uuid },
+      data: updateOrganizationDto,
+    });
   }
 
   remove(id: number) {

@@ -35,12 +35,12 @@ export class OrganizationsController {
     return organization;
   }
 
-  @Patch(':id')
+  @Patch(':uuid')
   update(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
-    return this.organizationsService.update(+id, updateOrganizationDto);
+    return this.organizationsService.update(uuid, updateOrganizationDto);
   }
 
   @Delete(':id')
