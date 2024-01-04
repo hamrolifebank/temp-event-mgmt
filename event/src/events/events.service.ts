@@ -70,9 +70,6 @@ export class EventsService {
         endTime,
       },
     });
-
-    //const dateObject = new Date(createEventDto.date, createEventDto.startTime);
-    //return this.
   }
 
   findAll() {
