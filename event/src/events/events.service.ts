@@ -19,39 +19,15 @@ export class EventsService {
       bloodBank,
       organizationId,
       date,
+      startTime,
+      endTime,
     } = createEventDto;
-    const [year, month, day] = date.split(',').map(Number);
-    const adjustedMonth = month - 1;
-
-    const [hours, minutes, seconds] = createEventDto.startTime
-      .split(':')
-      .map(Number);
-
-    const [endHours, endMinutes, endSeconds] = createEventDto.endTime
-      .split(':')
-      .map(Number);
-
-    const startTime = new Date(
-      year,
-      adjustedMonth,
-      day,
-      hours,
-      minutes,
-      seconds,
-      0,
-    );
-
-    const endTime = new Date(
-      year,
-      adjustedMonth,
-      day,
-      endHours,
-      endMinutes,
-      endSeconds,
-      0,
-    );
 
     const dateOfEvent = new Date(date);
+
+    const startTimeObj = new Date(`${date}T${startTime}`);
+
+    const endTimeObj = new Date(`${date}T${endTime}`);
 
     return this.prisma.event.create({
       data: {
@@ -66,8 +42,8 @@ export class EventsService {
         organizationId,
         date: dateOfEvent,
         bloodBank,
-        startTime,
-        endTime,
+        startTime: startTimeObj,
+        endTime: endTimeObj,
       },
     });
   }
@@ -82,9 +58,58 @@ export class EventsService {
     });
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    //return ``;
-    return 'the id of the article is not valid';
+  async update(uuid: string, updateEventDto: UpdateEventDto) {
+    const { date, startTime, endTime } = updateEventDto;
+
+    if (date && startTime && endTime) {
+      const newDate = new Date(date);
+      const start = new Date(`${date}T${startTime}`);
+
+      const end = new Date(`${date}T${endTime}`);
+
+      return this.prisma.event.update({
+        where: { uuid },
+        data: {
+          date: newDate,
+          startTime: start,
+          endTime: end,
+        },
+      });
+    } else if (startTime || endTime) {
+      const findEvent = await this.prisma.event.findUnique({
+        where: { uuid },
+      });
+      const year = String(findEvent.date.getFullYear());
+
+      const month = String(findEvent.date.getMonth() + 1).padStart(2, '0');
+
+      const day = String(findEvent.date.getDate()).padStart(2, '0');
+
+      const newDate = `${year}-${month}-${day}`;
+
+      let start: Date;
+      let end: Date;
+      if (startTime) {
+        start = new Date(`${newDate}T${startTime}`);
+      }
+      if (endTime) {
+        end = new Date(`${newDate}T${endTime}`);
+      }
+      return this.prisma.event.update({
+        where: { uuid },
+        data: {
+          startTime: start,
+          endTime: end,
+        },
+      });
+    } else {
+      return this.prisma.event.update({
+        where: {
+          uuid,
+        },
+        data: updateEventDto,
+      });
+    }
   }
 
   remove(id: number) {

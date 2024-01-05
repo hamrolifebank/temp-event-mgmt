@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
 } from '@nestjs/common';
@@ -30,9 +30,9 @@ export class EventsController {
     return this.eventsService.findOne(uuid);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventsService.update(+id, updateEventDto);
+  @Put(':uuid')
+  update(@Param('uuid') uuid: string, @Body() updateEventDto: UpdateEventDto) {
+    return this.eventsService.update(uuid, updateEventDto);
   }
 
   @Delete(':id')
