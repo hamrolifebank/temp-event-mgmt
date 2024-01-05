@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateDonorDto } from 'src/donors/dto/create-donor.dto';
 
 @Injectable()
 export class EventsService {
@@ -115,6 +116,19 @@ export class EventsService {
   remove(uuid: string) {
     return this.prisma.event.delete({
       where: { uuid },
+    });
+  }
+  createPledgerForEvent(createDonorDto: CreateDonorDto, uuid: string) {
+    const { dop, dopNp } = createDonorDto;
+
+    return this.prisma.donor.create({
+      data: {
+        ...createDonorDto,
+        dop: new Date(dop),
+        dopNp: new Date(dopNp),
+
+        eventId: uuid,
+      },
     });
   }
 }
