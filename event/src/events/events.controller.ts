@@ -35,8 +35,8 @@ export class EventsController {
     return this.eventsService.update(uuid, updateEventDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.eventsService.remove(uuid);
   }
 }

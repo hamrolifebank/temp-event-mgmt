@@ -112,7 +112,9 @@ export class EventsService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+  remove(uuid: string) {
+    return this.prisma.event.delete({
+      where: { uuid },
+    });
   }
 }
