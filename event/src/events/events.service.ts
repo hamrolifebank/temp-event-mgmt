@@ -73,15 +73,18 @@ export class EventsService {
   }
 
   findAll() {
-    return `This action returns all events`;
+    return this.prisma.event.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
+  findOne(uuid: string) {
+    return this.prisma.event.findUnique({
+      where: { uuid },
+    });
   }
 
   update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+    //return ``;
+    return 'the id of the article is not valid';
   }
 
   remove(id: number) {
