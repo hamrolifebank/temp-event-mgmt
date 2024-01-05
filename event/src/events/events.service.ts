@@ -83,7 +83,8 @@ export class EventsService {
   }
 
   update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+    //return ``;
+    return 'the id of the article is not valid';
   }
 
   remove(id: number) {
