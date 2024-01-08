@@ -31,6 +31,11 @@ export class EventsController {
     return this.eventsService.getPledgerForEvent(uuid);
   }
 
+  @Get(':uuid/donors')
+  getDonorForEvent(@Param('uuid') uuid: string) {
+    return this.eventsService.getPledgerForEvent(uuid);
+  }
+
   @Get(':uuid')
   findOne(@Param('uuid') uuid: string) {
     return this.eventsService.findOne(uuid);

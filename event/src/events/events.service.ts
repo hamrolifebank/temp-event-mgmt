@@ -67,6 +67,13 @@ export class EventsService {
     });
   }
 
+  getDonorForEvent(uuid: string) {
+    return this.prisma.event.findUnique({
+      where: { uuid: uuid },
+      include: { donations: true },
+    });
+  }
+
   async update(uuid: string, updateEventDto: UpdateEventDto) {
     const { date, startTime, endTime } = updateEventDto;
 
