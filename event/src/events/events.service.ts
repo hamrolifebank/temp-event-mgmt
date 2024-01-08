@@ -3,6 +3,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDonorDto } from 'src/donors/dto/create-donor.dto';
+import { CreateDonationDto } from 'src/donations/dto/create-donation.dto';
 
 @Injectable()
 export class EventsService {
@@ -127,6 +128,14 @@ export class EventsService {
         dop: new Date(dop),
         dopNp: new Date(dopNp),
 
+        eventId: uuid,
+      },
+    });
+  }
+  createDonorForEvent(createDonationDto: CreateDonationDto, uuid: string) {
+    return this.prisma.donation.create({
+      data: {
+        ...createDonationDto,
         eventId: uuid,
       },
     });
