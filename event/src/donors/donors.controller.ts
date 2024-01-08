@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { DonorsService } from './donors.service';
 import { CreateDonorDto } from './dto/create-donor.dto';
@@ -26,9 +27,14 @@ export class DonorsController {
     return this.donorsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.donorsService.findOne(+id);
+  @Get(':uuid')
+  async findOne(@Param('uuid') uuid: string) {
+    const donor = await this.donorsService.findOne(uuid);
+
+    if (!donor) {
+      throw new NotFoundException(`Donor with ${uuid} does not exist`);
+    }
+    return donor;
   }
 
   @Patch(':id')
