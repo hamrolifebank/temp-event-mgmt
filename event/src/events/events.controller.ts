@@ -11,6 +11,7 @@ import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { CreateDonorDto } from 'src/donors/dto/create-donor.dto';
+import { CreateDonationDto } from 'src/donations/dto/create-donation.dto';
 
 @Controller('events')
 export class EventsController {
@@ -40,11 +41,20 @@ export class EventsController {
   remove(@Param('uuid') uuid: string) {
     return this.eventsService.remove(uuid);
   }
+
   @Post(':uuid/pledgers')
   createPledgerForEvent(
     @Param('uuid') uuid: string,
     @Body() createDonorDto: CreateDonorDto, // Use the DTO for creating a pledger
   ) {
     return this.eventsService.createPledgerForEvent(createDonorDto, uuid);
+  }
+
+  @Post(':uuid/donors')
+  createDonorForEvent(
+    @Param('uuid') uuid: string,
+    @Body() createDonationDto: CreateDonationDto,
+  ) {
+    return this.eventsService.createDonorForEvent(createDonationDto, uuid);
   }
 }

@@ -8,7 +8,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { DonorsModule } from './donors/donors.module';
 
 import { ConsentsModule } from './consents/consents.module';
-import { DonoationsModule } from './donoations/donoations.module';
+
 import { DonationsModule } from './donations/donations.module';
 
 @Module({
@@ -19,7 +19,7 @@ import { DonationsModule } from './donations/donations.module';
     OrganizationsModule,
     DonorsModule,
     ConsentsModule,
-    DonoationsModule,
+
     DonationsModule,
   ],
   controllers: [AppController],
