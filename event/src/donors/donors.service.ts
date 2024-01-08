@@ -11,12 +11,13 @@ export class DonorsService {
   }
 
   findAll() {
-    console.log('from service');
     return this.prisma.donor.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} donor`;
+  findOne(uuid: string) {
+    return this.prisma.donor.findUnique({
+      where: { uuid: uuid },
+    });
   }
 
   update(id: number, updateDonorDto: UpdateDonorDto) {
