@@ -60,6 +60,13 @@ export class EventsService {
     });
   }
 
+  getPledgerForEvent(uuid: string) {
+    return this.prisma.event.findUnique({
+      where: { uuid: uuid },
+      include: { donors: true },
+    });
+  }
+
   async update(uuid: string, updateEventDto: UpdateEventDto) {
     const { date, startTime, endTime } = updateEventDto;
 
