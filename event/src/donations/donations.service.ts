@@ -25,7 +25,10 @@ export class DonationsService {
   }
 
   update(uuid: string, updateDonationDto: UpdateDonationDto) {
-    console.log(updateDonationDto, 'from update service');
+    return this.prisma.donation.update({
+      where: { uuid },
+      data: updateDonationDto,
+    });
   }
 
   remove(id: number) {
