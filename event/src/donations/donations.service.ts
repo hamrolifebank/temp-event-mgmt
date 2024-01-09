@@ -11,15 +11,15 @@ export class DonationsService {
   }
 
   findAll() {
-    return `This action returns all donations`;
+    return this.prisma.donation.findMany();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} donation`;
   }
 
-  update(id: number, updateDonationDto: UpdateDonationDto) {
-    return `This action updates a #${id} donation`;
+  update(uuid: string, updateDonationDto: UpdateDonationDto) {
+    console.log(updateDonationDto, 'from update service');
   }
 
   remove(id: number) {

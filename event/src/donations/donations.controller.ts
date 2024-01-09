@@ -30,12 +30,12 @@ export class DonationsController {
     return this.donationsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch(':uuid')
   update(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateDonationDto: UpdateDonationDto,
   ) {
-    return this.donationsService.update(+id, updateDonationDto);
+    return this.donationsService.update(uuid, updateDonationDto);
   }
 
   @Delete(':id')
