@@ -27,7 +27,9 @@ export class OrganizationsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} organization`;
+  remove(uuid: string) {
+    return this.prisma.organization.delete({
+      where: { uuid },
+    });
   }
 }

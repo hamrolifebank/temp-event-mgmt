@@ -20,11 +20,16 @@ export class DonorsService {
     });
   }
 
-  update(id: number, updateDonorDto: UpdateDonorDto) {
-    return `This action updates a #${id} donor`;
+  update(uuid: string, updateDonorDto: UpdateDonorDto) {
+    return this.prisma.donor.update({
+      where: { uuid },
+      data: updateDonorDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} donor`;
+  remove(uuid: string) {
+    return this.prisma.donor.delete({
+      where: { uuid },
+    });
   }
 }

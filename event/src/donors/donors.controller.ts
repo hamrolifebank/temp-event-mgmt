@@ -37,13 +37,13 @@ export class DonorsController {
     return donor;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDonorDto: UpdateDonorDto) {
-    return this.donorsService.update(+id, updateDonorDto);
+  @Patch(':uuid')
+  update(@Param('uuid') uuid: string, @Body() updateDonorDto: UpdateDonorDto) {
+    return this.donorsService.update(uuid, updateDonorDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.donorsService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.donorsService.remove(uuid);
   }
 }

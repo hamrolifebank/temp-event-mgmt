@@ -43,8 +43,8 @@ export class OrganizationsController {
     return this.organizationsService.update(uuid, updateOrganizationDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.organizationsService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.organizationsService.remove(uuid);
   }
 }

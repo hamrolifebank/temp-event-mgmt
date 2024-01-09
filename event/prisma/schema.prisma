@@ -21,8 +21,8 @@ generator dbml{
 }
 
 model Event{
-  id               Int       @default(autoincrement())
-  uuid             String    @id @default(uuid())
+  id               Int        @id    @default(autoincrement())
+  uuid             String     @unique @default(uuid()) 
   name             String    
   contactPhone     String    
   contactEmail     String?    
@@ -39,7 +39,7 @@ model Event{
   organization     Organization? @relation(fields:[organizationId],references:[uuid])
   donations        Donation[]
   donors           Donor[]
-  createdAT        DateTime @default(now())
+  createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   
   @@index([name])
@@ -48,14 +48,14 @@ model Event{
 }
 
 model Organization {
-  id               Int       @default(autoincrement())
-  uuid             String    @id @default(uuid())
+  id               Int       @id     @default(autoincrement())
+  uuid             String    @unique @default(uuid())
   name             String    @unique
   phone            String    
   email            String?    
   address          String?    
   isBloodBank      Boolean   @default(false)
-  createdAT        DateTime @default(now())
+  createdAt       DateTime @default(now())
   updatedAt        DateTime @updatedAt
   events           Event[]
 
@@ -64,8 +64,8 @@ model Organization {
 }
 
 model Donation {
-  id               Int       @default(autoincrement())
-  uuid             String    @id @default(uuid())
+  id               Int       @id       @default(autoincrement())
+  uuid             String    @unique   @default(uuid())
   bloodBagType     BloodTypeBagEnum?  @default(SINGLE) 
   bloodBagId       String?      @unique
   tubeId           String?
@@ -78,14 +78,14 @@ model Donation {
   donorId          String?
   event            Event? @relation(fields:[eventId],references:[uuid])
   donor            Donor?  @relation(fields:[donorId],references:uuid)
-  createdAT        DateTime @default(now())
+  createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
 }
 
 model Donor {
-id               Int       @default(autoincrement())
-uuid             String    @id @default(uuid())
+id               Int        @id      @default(autoincrement())
+uuid             String     @unique  @default(uuid())
 name             String    
 phone            String    
 email            String    
@@ -100,7 +100,7 @@ lastDonated      DateTime?
 eventId          String
 donation         Donation[]
 event            Event  @relation(fields:[eventId],references:[uuid])
-createdAT        DateTime @default(now())
+createdAt        DateTime @default(now())
 updatedAt        DateTime @updatedAt
 @@index([name])
 
