@@ -38,8 +38,8 @@ export class DonationsController {
     return this.donationsService.update(uuid, updateDonationDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.donationsService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.donationsService.remove(uuid);
   }
 }

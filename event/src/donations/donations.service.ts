@@ -31,7 +31,9 @@ export class DonationsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} donation`;
+  remove(uuid: string) {
+    return this.prisma.donation.delete({
+      where: { uuid },
+    });
   }
 }
