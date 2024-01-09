@@ -25,21 +25,21 @@ export class DonationsController {
     return this.donationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.donationsService.findOne(+id);
+  @Get(':uuid')
+  findOne(@Param('uuid') id: string) {
+    return this.donationsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':uuid')
   update(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateDonationDto: UpdateDonationDto,
   ) {
-    return this.donationsService.update(+id, updateDonationDto);
+    return this.donationsService.update(uuid, updateDonationDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.donationsService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.donationsService.remove(uuid);
   }
 }

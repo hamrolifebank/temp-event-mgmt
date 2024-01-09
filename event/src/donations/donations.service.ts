@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDonationDto } from './dto/create-donation.dto';
 import { UpdateDonationDto } from './dto/update-donation.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -11,18 +11,29 @@ export class DonationsService {
   }
 
   findAll() {
-    return `This action returns all donations`;
+    return this.prisma.donation.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} donation`;
+  async findOne(uuid: string) {
+    const donation = await this.prisma.donation.findUnique({
+      where: { uuid },
+    });
+    if (!donation) {
+      throw new NotFoundException(`Donation with ${uuid} does not exist`);
+    }
+    return donation;
   }
 
-  update(id: number, updateDonationDto: UpdateDonationDto) {
-    return `This action updates a #${id} donation`;
+  update(uuid: string, updateDonationDto: UpdateDonationDto) {
+    return this.prisma.donation.update({
+      where: { uuid },
+      data: updateDonationDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} donation`;
+  remove(uuid: string) {
+    return this.prisma.donation.delete({
+      where: { uuid },
+    });
   }
 }
