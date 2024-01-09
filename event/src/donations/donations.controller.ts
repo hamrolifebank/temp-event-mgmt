@@ -25,9 +25,9 @@ export class DonationsController {
     return this.donationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.donationsService.findOne(+id);
+  @Get(':uuid')
+  findOne(@Param('uuid') id: string) {
+    return this.donationsService.findOne(id);
   }
 
   @Patch(':uuid')
