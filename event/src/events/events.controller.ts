@@ -10,8 +10,8 @@ import {
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { CreateDonorDto } from 'src/donors/dto/create-donor.dto';
-import { CreateDonationDto } from 'src/donations/dto/create-donation.dto';
+import { CreateDonorDto } from '../donors/dto/create-donor.dto';
+import { CreateDonationDto } from '../donations/dto/create-donation.dto';
 
 @Controller('events')
 export class EventsController {

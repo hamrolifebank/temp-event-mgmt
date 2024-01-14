@@ -11,38 +11,38 @@ CREATE TYPE "GenderEnum" AS ENUM ('M', 'F', 'U', 'O');
 CREATE TABLE "Event" (
     "id" SERIAL NOT NULL,
     "uuid" TEXT NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "contactPhone" VARCHAR(255) NOT NULL,
-    "contactEmail" VARCHAR(255),
-    "location" VARCHAR(255) NOT NULL,
+    "name" TEXT NOT NULL,
+    "contactPhone" TEXT NOT NULL,
+    "contactEmail" TEXT,
+    "location" TEXT NOT NULL,
     "latitude" DECIMAL(65,30),
     "longitude" DECIMAL(65,30),
-    "bloodBank" VARCHAR(255) NOT NULL,
+    "bloodBank" TEXT NOT NULL,
     "target" INTEGER NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "startTime" TIMESTAMP(3) NOT NULL,
     "endTime" TIMESTAMP(3) NOT NULL,
     "isClosed" BOOLEAN NOT NULL DEFAULT false,
     "organizationId" TEXT,
-    "createdAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Event_pkey" PRIMARY KEY ("uuid")
+    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Organization" (
     "id" SERIAL NOT NULL,
     "uuid" TEXT NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "phone" VARCHAR(255) NOT NULL,
-    "email" VARCHAR(255),
-    "address" VARCHAR(255),
+    "name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "email" TEXT,
+    "address" TEXT,
     "isBloodBank" BOOLEAN NOT NULL DEFAULT false,
-    "createdAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Organization_pkey" PRIMARY KEY ("uuid")
+    CONSTRAINT "Organization_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -59,36 +59,57 @@ CREATE TABLE "Donation" (
     "custom" TEXT,
     "eventId" TEXT,
     "donorId" TEXT,
-    "createdAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Donation_pkey" PRIMARY KEY ("uuid")
+    CONSTRAINT "Donation_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Donor" (
     "id" SERIAL NOT NULL,
     "uuid" TEXT NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "phone" VARCHAR(255) NOT NULL,
-    "email" VARCHAR(255) NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "dop" TIMESTAMP(3) NOT NULL,
     "dopNp" TIMESTAMP(3) NOT NULL,
     "gender" "GenderEnum" NOT NULL,
     "bloodGroup" "BloodGroupEnum" NOT NULL DEFAULT 'OTHER',
-    "location" VARCHAR(255) NOT NULL,
+    "location" TEXT NOT NULL,
     "latitude" DECIMAL(65,30),
     "longitude" DECIMAL(65,30),
     "lastDonated" TIMESTAMP(3),
     "eventId" TEXT NOT NULL,
-    "createdAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Donor_pkey" PRIMARY KEY ("uuid")
+    CONSTRAINT "Donor_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Event_uuid_key" ON "Event"("uuid");
+
+-- CreateIndex
 CREATE INDEX "Event_name_idx" ON "Event"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Organization_uuid_key" ON "Organization"("uuid");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Organization_name_key" ON "Organization"("name");
+
+-- CreateIndex
+CREATE INDEX "Organization_name_idx" ON "Organization"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Donation_uuid_key" ON "Donation"("uuid");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Donation_bloodBagId_key" ON "Donation"("bloodBagId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Donor_uuid_key" ON "Donor"("uuid");
 
 -- CreateIndex
 CREATE INDEX "Donor_name_idx" ON "Donor"("name");

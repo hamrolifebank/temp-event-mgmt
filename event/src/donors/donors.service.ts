@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDonorDto } from './dto/create-donor.dto';
 import { UpdateDonorDto } from './dto/update-donor.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class DonorsService {

@@ -8,8 +8,8 @@ Project "event" {
 }
 
 Table Event {
-  id Int [increment, not null]
-  uuid String [pk]
+  id Int [pk, increment]
+  uuid String [unique, not null]
   name String [not null]
   contactPhone String [not null]
   contactEmail String
@@ -26,26 +26,26 @@ Table Event {
   organization Organization
   donations Donation [not null]
   donors Donor [not null]
-  createdAT DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
 
 Table Organization {
-  id Int [increment, not null]
-  uuid String [pk]
+  id Int [pk, increment]
+  uuid String [unique, not null]
   name String [unique, not null]
   phone String [not null]
   email String
   address String
   isBloodBank Boolean [not null, default: false]
-  createdAT DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   events Event [not null]
 }
 
 Table Donation {
-  id Int [increment, not null]
-  uuid String [pk]
+  id Int [pk, increment]
+  uuid String [unique, not null]
   bloodBagType BloodTypeBagEnum [default: 'SINGLE']
   bloodBagId String [unique]
   tubeId String
@@ -58,13 +58,13 @@ Table Donation {
   donorId String
   event Event
   donor Donor
-  createdAT DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
 
 Table Donor {
-  id Int [increment, not null]
-  uuid String [pk]
+  id Int [pk, increment]
+  uuid String [unique, not null]
   name String [not null]
   phone String [not null]
   email String [not null]
@@ -79,7 +79,7 @@ Table Donor {
   eventId String [not null]
   donation Donation [not null]
   event Event [not null]
-  createdAT DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
 
