@@ -1,14 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
-//import { OrganizationsModule } from '../src/organizations/organizations.module';
-//import { OrganizationsService } from '../src/organizations/organizations.service';
+
 import * as request from 'supertest';
 
 import { AppModule } from './../src/app.module';
 
 describe('organization (e2e)', () => {
   let app: INestApplication;
-  let organizationService: { findAll: () => ['test'] };
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -16,22 +15,13 @@ describe('organization (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-    // const moduleRef = await Test.createTestingModule({
-    //   imports: [OrganizationsModule],
-    // })
-    //   .overrideProvider(OrganizationsService)
-    //   .useValue(organizationService)
-    //   .compile();
-
-    // app = moduleRef.createNestApplication();
-    // await app.init();
   });
 
   it('It should create new organizaion', () => {
     return request(app.getHttpServer())
       .post('/organizations')
       .send({
-        name: 'BloodDonate',
+        name: 'Jiwan Daan garau',
         email: 'blood@gmail.com',
         phone: '9843866512',
         address: 'Sanapa',
@@ -54,12 +44,6 @@ describe('organization (e2e)', () => {
       expect(organisation).toHaveProperty('createdAt');
       expect(organisation).toHaveProperty('updatedAt');
     });
-    // return request(app.getHttpServer())
-    //   .get('/organizations')
-    //   .expect(200)
-    //   .expect({
-    //     data: organizationService.findAll(),
-    //   });
   });
 
   it('It should fetch individual organinsation by uuid', async () => {
@@ -79,13 +63,39 @@ describe('organization (e2e)', () => {
     expect(response.body).toHaveProperty('createdAt');
     expect(response.body).toHaveProperty('updatedAt');
   });
-  it.only('it should update the organization', async () => {
+  it('it should update the organization', async () => {
     const getOrg = await request(app.getHttpServer()).get('/organizations');
-    // const updateOrg =  getOrg.body[0]
-    // const updateObj = {
+    const updateOrg = getOrg.body[0];
 
-    // }
-    // const response =  await request(app.getHttpServer()).update(`/organizations/${dele}`)
+    const updateObj = {
+      address: 'Purano-Baneshwor',
+    };
+    const response = await request(app.getHttpServer())
+      .patch(`/organizations/${updateOrg.uuid}`)
+      .send(updateObj);
+    expect(response.status).toBe(200);
+    const updatedOrgResponse = await request(app.getHttpServer()).get(
+      `/organizations/${updateOrg.uuid}`,
+    );
+    const updatedOrg = updatedOrgResponse.body;
+
+    expect(updatedOrg.address).toBe(updateObj.address);
+  });
+
+  it.only('It should delete an organization', async () => {
+    const getOrg = await request(app.getHttpServer()).get('/organizations');
+
+    const deleteOrg = getOrg.body[0];
+    const getDeleteRespone = await request(app.getHttpServer()).delete(
+      `/organizations/${deleteOrg.uuid}`,
+    );
+
+    expect(getDeleteRespone.status).toBe(200);
+    const getDeletedResponse = await request(app.getHttpServer()).get(
+      `/organizations/${deleteOrg.uuid}`,
+    );
+
+    expect(getDeletedResponse.status).toBe(404);
   });
   afterAll(async () => {
     await app.close();

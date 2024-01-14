@@ -65,7 +65,6 @@ describe('OrganizationsService', () => {
   });
 
   it('create organisation', async () => {
-    //const result = await service.findAll();
     const createDto = {
       name: 'marius',
       email: 'marius@gmail.com',
