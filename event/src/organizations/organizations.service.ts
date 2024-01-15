@@ -17,6 +17,9 @@ export class OrganizationsService {
   findOne(uuid: string) {
     return this.prisma.organization.findUnique({
       where: { uuid },
+      include: {
+        events: true,
+      },
     });
   }
 

@@ -82,7 +82,7 @@ describe('organization (e2e)', () => {
     expect(updatedOrg.address).toBe(updateObj.address);
   });
 
-  it.only('It should delete an organization', async () => {
+  it('It should delete an organization', async () => {
     const getOrg = await request(app.getHttpServer()).get('/organizations');
 
     const deleteOrg = getOrg.body[0];
