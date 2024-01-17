@@ -7,6 +7,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,6 +15,18 @@ async function bootstrap() {
     new FastifyAdapter(),
     //new FastifyAdapter({ logger: true }),
   );
+  const config = new DocumentBuilder()
+    .setTitle('Rumsan Libraries')
+    .setDescription('Rumsan libraries API')
+    .setVersion('1.0')
+    // .addBearerAuth(
+    //   { type: 'http', scheme: 'bearer', bearerFormat: APP.JWT_BEARER },
+    //   APP.JWT_BEARER,
+    // )
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   //whitelist remove unwanted field
   const { httpAdapter } = app.get(HttpAdapterHost);
