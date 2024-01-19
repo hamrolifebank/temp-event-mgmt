@@ -19,7 +19,13 @@ export class CreateDonationDto {
   consentUrl?: string;
 
   @IsOptional()
-  rejectReason?: string;
+  rejectReason?:
+    | string
+    | {
+        medicine_user: boolean;
+        low_pressure: boolean;
+        hb_low: boolean;
+      };
 
   @IsString()
   @IsOptional()

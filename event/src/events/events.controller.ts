@@ -31,9 +31,9 @@ export class EventsController {
     return this.eventsService.getPledgerForEvent(uuid);
   }
 
-  @Get(':uuid/donors')
+  @Get(':uuid/donations')
   getDonorForEvent(@Param('uuid') uuid: string) {
-    return this.eventsService.getPledgerForEvent(uuid);
+    return this.eventsService.getDonorForEvent(uuid);
   }
 
   @Get(':uuid')
@@ -59,7 +59,7 @@ export class EventsController {
     return this.eventsService.createPledgerForEvent(createDonorDto, uuid);
   }
 
-  @Post(':uuid/donors')
+  @Post(':uuid/donations')
   createDonorForEvent(
     @Param('uuid') uuid: string,
     @Body() createDonationDto: CreateDonationDto,

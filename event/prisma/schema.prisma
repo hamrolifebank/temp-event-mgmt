@@ -77,7 +77,7 @@ model Donation {
   eventId          String?
   donorId          String?
   event            Event? @relation(fields:[eventId],references:[uuid])
-  donor            Donor?  @relation(fields:[donorId],references:uuid)
+  donor            Donor?  @relation(fields:[donorId],references:[uuid])
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

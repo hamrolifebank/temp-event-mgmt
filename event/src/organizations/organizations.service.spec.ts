@@ -31,7 +31,13 @@ describe('OrganizationsService', () => {
   const mockPrismaService = {
     organization: {
       findMany: jest.fn(() => organisations),
-      create: jest.fn((data) => data),
+      create: jest.fn((data) => {
+        return {
+          ...data.data,
+          id: 3,
+          uuid: '6c239446-4031-4c64-80fc-26a5386cf138',
+        };
+      }),
       findUnique: jest.fn((params) => {
         if (params.where.uuid === '4dd88657-eaf6-4357-b3f5-ec674d97b1a4') {
           return organisations[1];
@@ -110,10 +116,11 @@ describe('OrganizationsService', () => {
       id: 3,
       uuid: '6c239446-4031-4c64-80fc-26a5386cf138',
     };
+    const result = await service.create(createDto);
+
     jest
       .spyOn(mockPrismaService.organization, 'create')
       .mockReturnValue(expectedResult);
-    const result = await service.create(createDto);
 
     expect(mockPrismaService.organization.create).toHaveBeenCalledWith({
       data: createDto,

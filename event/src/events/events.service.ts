@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -75,54 +80,66 @@ export class EventsService {
   }
 
   async update(uuid: string, updateEventDto: UpdateEventDto) {
-    const { date, startTime, endTime } = updateEventDto;
+    const findEvent = await this.prisma.event.findUnique({
+      where: { uuid },
+    });
 
-    if (date && startTime && endTime) {
-      const newDate = new Date(date);
-      const start = new Date(`${date}T${startTime}`);
+    const {
+      date,
+      startTime,
+      endTime,
+      name,
+      contactPhone,
+      contactEmail,
+      location,
+      latitude,
+      longitude,
+      bloodBank,
+      target,
+      isClosed,
+    } = updateEventDto;
 
-      const end = new Date(`${date}T${endTime}`);
+    const currentYear = String(findEvent.date.getFullYear());
+    const currentMonth = String(findEvent.date.getMonth() + 1).padStart(2, '0');
+    const currentDay = String(findEvent.date.getDate()).padStart(2, '0');
+    const currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
 
+    const newDate = date ? new Date(date) : findEvent.date;
+
+    const start = startTime
+      ? new Date(`${date ? date : currentDate}T${startTime}`)
+      : findEvent.startTime;
+
+    const end = endTime
+      ? new Date(`${date ? date : currentDate}T${endTime}`)
+      : findEvent.endTime;
+
+    if ((date && startTime && endTime) || startTime || endTime) {
       return this.prisma.event.update({
         where: { uuid },
         data: {
           date: newDate,
           startTime: start,
           endTime: end,
+          name,
+          contactPhone,
+          contactEmail,
+          location,
+          latitude,
+          longitude,
+          bloodBank,
+          target,
+          isClosed,
         },
       });
-    } else if (startTime || endTime) {
-      const findEvent = await this.prisma.event.findUnique({
-        where: { uuid },
-      });
-      const year = String(findEvent.date.getFullYear());
-
-      const month = String(findEvent.date.getMonth() + 1).padStart(2, '0');
-
-      const day = String(findEvent.date.getDate()).padStart(2, '0');
-
-      const newDate = `${year}-${month}-${day}`;
-
-      let start: Date;
-      let end: Date;
-      if (startTime) {
-        start = new Date(`${newDate}T${startTime}`);
-      }
-      if (endTime) {
-        end = new Date(`${newDate}T${endTime}`);
-      }
-      return this.prisma.event.update({
-        where: { uuid },
-        data: {
-          startTime: start,
-          endTime: end,
-        },
-      });
+    } else if (date) {
+      throw new HttpException(
+        'Updade startTime or endTime',
+        HttpStatus.BAD_REQUEST,
+      );
     } else {
       return this.prisma.event.update({
-        where: {
-          uuid,
-        },
+        where: { uuid },
         data: updateEventDto,
       });
     }
@@ -146,7 +163,10 @@ export class EventsService {
       },
     });
   }
-  createDonorForEvent(createDonationDto: CreateDonationDto, uuid: string) {
+  async createDonorForEvent(
+    createDonationDto: CreateDonationDto,
+    uuid: string,
+  ) {
     return this.prisma.donation.create({
       data: {
         ...createDonationDto,

@@ -55,9 +55,9 @@ export class CreateEventDto {
   endTime: string;
 
   @IsBoolean()
-  isClosed: false;
+  isClosed: boolean;
 
-  @IsOptional()
   @IsString()
-  organizationId: string;
+  @IsOptional()
+  organizationId?: string;
 }
